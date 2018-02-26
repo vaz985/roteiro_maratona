@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 #include <vector>
 #include <bitset>
 using namespace std;
@@ -13,7 +14,7 @@ int main() {
   while( T-- > 0 ) {
     int m, d;
     cin >> m >> d;
-    vector< bitset<32> > v;
+    list< bitset<32> > l;
     for( int i=0; i<d; i++ ) {
       int n; cin >> n;
       if( n == 0 ) 
@@ -23,36 +24,37 @@ int main() {
         int x; cin >> x;
         b.flip(x);  
       }
-      v.push_back(b);
+      l.push_back(b);
     }
     if( m == 0 ) {
       cout << "0" << endl;
       continue;
     }
-    unsigned int min = -1;
-    for( int it = 0; it < d; it++ ) {
-      bitset<32> s = v[it];
-      unsigned int count = 1;
-      while( s.count() < m && count < d ) {
-        int idx = it; int max = 0;
-        for( int it2 = 0; it2 < d; it2++ ) {
-          if( ( v[it2].count() - (s&v[it2]).count() ) > max && it != it2 ) {
-            idx = it2;
-            max = ( v[it2].count() - (s&v[it2]).count() );
-          }
-        } 
-        s |= v[idx];
-        count++;
+    l.sort(comp);
+    unsigned int count = 1;
+    bitset<32> s = l.front(); l.pop_front();
+    cout << s << endl << endl;
+    while( !l.empty() ) {
+      if( s.count() >= m ) {
+        break;
       }
-      if( s.count() >= m && count < min ) {
-        min = count;
+      list< bitset<32> > :: iterator rm;
+      unsigned int max = 0;
+      for( list< bitset<32> > :: iterator it = l.begin(); it != l.end(); it++ ) {
+        if( ((*it).count() -  (s&*it).count()) > max ) {
+          rm = it;
+          max = ((*it).count() - (s&*it).count());
+        }
       }
-      //cout << s << endl;
-    } 
-    if( min > d ) 
+      s |= (*rm);
+      l.erase(rm);
+      count++;
+    }
+    if( s.count() < m ) {
       cout << "Desastre!" << endl;
-    else
-      cout << min << endl;
+    } else {
+      cout << count << endl;
+    }
   }
   return 0;
 }
