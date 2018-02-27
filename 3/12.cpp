@@ -1,29 +1,8 @@
 #include <iostream>
-#include <list>
-#include <vector>
 #include <bitset>
+#include <vector>
 using namespace std;
-struct best_sol {
-  bitset<32> best_s;
-  int d_count;
-};
-struct best_sol bs;
-void f( vector<bitset<32> > v, bitset<32> s, int d, int m ) {
-  if( s.count() >= m && d < bs.d_count ) {
-    bs.best_s = s;
-    bs.d_count = d; 
-  }
-  if( v.size() == 0 ) {
-    return;
-  }
-  else {
-    for( int i=0; i<s.size(); i++ ) {
-      bitset<32> s2 = s | *(v.begin() + i);
-      vector< bitset<32> > v2 = v; v2.erase(v2.begin() + i);
-      f( v2, s2, d+1, m );
-    } 
-  }  
-}
+
 int main() {
   int T; cin >> T;
   while( T-- > 0 ) {
@@ -43,20 +22,25 @@ int main() {
       cout << "0" << endl;
       continue;
     }
-    unsigned int min = -1;
-    int count;
-    bs.d_count = d+1;
-    for( int i=0; i<d; i++ ) {
-      bitset<32> s = *(v.begin()+i); 
-      vector< bitset<32> > v2 = v; v2.erase(v2.begin()+i);
-      f( v2, s, 1, m );
+    unsigned int min_d = -1;
+    for( int i=0; i<(1<<d); i++ ) {
+      bitset<32> s;
+      int amount = 0;
+      for( int j=0; j<d; j++ ) {
+        if( i & (1<<j) ) {
+          s |= v[j];
+          amount++;
+        }
+      }
+      if( s.count() >= m && amount < min_d ) {
+        min_d = amount;
+      }
     }
-    if( bs.best_s.count() >= m && bs.d_count <= d ) {
-      cout << bs.d_count << endl;
-    }
-    else {
+    if( min_d == (unsigned int)(-1) ) {
       cout << "Desastre!" << endl;
     }
+    else
+      cout << min_d << endl;
   }
   return 0;
 }
