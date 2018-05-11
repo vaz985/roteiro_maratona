@@ -9,43 +9,42 @@ int main() {
     if( n==0 ) break;
     cout << "Teste " << test_n++ << endl;
     vector< bitset<21> > v;
-    bitset<21> b; v.push_back(b);
-    for( int i=1; i<=n; i++ ) {
+    bitset<21> b;
+    for( int i=0; i<n; i++ ) {
       bitset<21> bs;
       while(1) {
         int x; cin >> x;
         if( x == 0 ) 
           break;
-        bs.flip(x);
+        bs.flip(x-1);
       }
       v.push_back(bs);
+      //cout << i << " " << v[i] << endl;
     }
     //for( int i=1; i<=n; i++ ) 
     //  cout << v[i] << endl;
     int max = 0;
     for( int i=1; i < (1<<n); i++ ) {
-      int amount = 0;
       bitset<21> state = i;
-      cout << state << endl;
-      bool stop = false;
-      for( int j=1; j<=n && stop==false; j++ ) {
+      int amount = state.count();
+      //cout << state << endl;
+      //if( amount <= max ) continue;
+      //cout << "state: " << state << endl;
+      for( int j=0; j<n; j++ ) {
         if( state.test(j) ) {
-          amount++;
-          for( int k=1; k<=n; k++ ) {
-            if( state.test(k) && v[j].test(k) ) {
-              stop = true; 
-              amount = 0;
-            }
+          if( (state & v[j]).count() > 0 ) {
+            amount = 0; 
+            break;
           }
-        } 
-      }
+        }
+      } 
+      //cout << " " << r << endl;
       if( amount > max ) {
         max = amount;
-        cout << "melhorou" << endl;
+        //cout << "max: " << state << endl;
       }
     }
-    cout << max << endl;
-    break;
+    cout << max << endl << endl;
   }
   return 0;
 }

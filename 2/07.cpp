@@ -1,6 +1,4 @@
-#include <iostream>
-#include <queue>
-#include <cmath>
+#include <bits/stdc++.h>
 using namespace std;
 struct cont {
   int i;
