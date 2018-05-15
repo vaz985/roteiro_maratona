@@ -1,0 +1,32 @@
+02 - BIT Bits Trocados
+	Greedy Coin Change
+	Funciona pois v[i]*2 <= v[i+1] p/ todo i
+03 - Moedas
+	DP Coin Change
+  Dado o valor V calculamos a menor quantidade para 1 ate V;
+  Change(V) = 1 + min(V - each_coin)
+04 - Desculpa
+  0-1 Knapsack, problema da mochila com itens unicos, subsetsum
+  Estado (id_item, remaning) recorrente
+  Transicao
+            -> Passou por todos os itens ou resta 0 peso
+            -> Max entre pegar o item ou nao pegar
+            -> Se o item for mais pesado que o resto, passa pro prox
+05 - Dentista
+  Greddy Schedule
+  Sort por termino, pega o primeiro valido e vai pegando o restante valido
+  Pega um otimo e compara com a solucao gulosa, vamos ver que da na msm
+  *Pegar mais infos*
+06 - Bapostas
+  Subsequencia contigua de soma max
+  DP resolve em (n^2)
+    *Fazer a DP dps*
+
+  Kadane(em O(n)):
+  max_ending_here = max_so_far = A[0]
+    for x in A[1:]:
+      max_ending_here = max(x, max_ending_here + x)
+      max_so_far = max(max_so_far, max_ending_here)
+07 - Tesouro
+
+
